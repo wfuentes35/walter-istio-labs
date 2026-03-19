@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-v3 # Este es nuestro ambiente GREEN
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: mi-web
