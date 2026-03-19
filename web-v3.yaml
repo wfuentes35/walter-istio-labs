@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: wfuentesw/mi-web:v4  # <--- Asegúrate que diga exactamente esto
+        image: wfuentes/mi-web:v4  # <--- Asegúrate que diga exactamente esto
         imagePullPolicy: Always # <--- Cambia "Never" por "IfNotPresent"
         ports:
         - containerPort: 80
