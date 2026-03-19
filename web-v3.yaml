@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v3 # Este es nuestro ambiente GREEN
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mi-web
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: mi-web
+        version: v3
+    spec:
+      containers:
+      - name: nginx
+        image: mi-web:v3  # <--- Asegúrate que diga exactamente esto
+        imagePullPolicy: IfNotPresent # <--- Cambia "Never" por "IfNotPresent"
+        ports:
+        - containerPort: 80

@@ -1,0 +1,56 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: web-gateway
+spec:
+  selector:
+    istio: ingressgateway # Usa el gateway que instalamos ayer
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: web-virtualservice
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - web-gateway
+  http:
+  - route:
+    - destination:
+        host: servicio-web
+        subset: v1
+      weight: 0 # 50% del tráfico a la V1
+    - destination:
+        host: servicio-web
+        subset: v2
+      weight: 0 # 50% del tráfico a la V2
+    - destination:
+        host: servicio-web
+        subset: v3
+      weight: 100 # 100% del tráfico a la V3
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: web-destinationrule
+spec:
+  host: servicio-web
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+# ... (lo que ya tenías de v1 y v2)
+  - name: v3
+    labels:
+      version: v3
