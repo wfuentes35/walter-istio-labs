@@ -1,0 +1,56 @@
+# --- VERSIÓN 1 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mi-web
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: mi-web
+        version: v1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        command: ["/bin/sh", "-c", "echo '<h1>ESTA ES LA V1</h1>' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"]
+---
+# --- VERSIÓN 2 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mi-web
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: mi-web
+        version: v2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        command: ["/bin/sh", "-c", "echo '<h1>ESTA ES LA V2 (NUEVA)</h1>' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"]
+---
+# --- EL SERVICIO ÚNICO ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicio-web
+spec:
+  selector:
+    app: mi-web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
