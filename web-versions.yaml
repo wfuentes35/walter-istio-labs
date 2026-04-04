@@ -1,4 +1,4 @@
-# --- VERSIÓN 1 ---
+# --- VERSIÓN 1 (Hardened) ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -18,9 +18,20 @@ spec:
       containers:
       - name: nginx
         image: nginx
+        resources: # <--- Protección de RAM/CPU agregada
+          requests:
+            memory: "32Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
         command: ["/bin/sh", "-c", "echo '<h1>ESTA ES LA V1</h1>' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"]
+        readinessProbe: # <--- Ahora el clúster sabe si está sana
+          httpGet:
+            path: /
+            port: 80
 ---
-# --- VERSIÓN 2 ---
+# --- VERSIÓN 2 (Hardened) ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,7 +51,18 @@ spec:
       containers:
       - name: nginx
         image: nginx
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "50m"
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
         command: ["/bin/sh", "-c", "echo '<h1>ESTA ES LA V2 (NUEVA)</h1>' > /usr/share/nginx/html/index.html && nginx -g 'daemon off;'"]
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
 ---
 # --- EL SERVICIO ÚNICO ---
 apiVersion: v1
