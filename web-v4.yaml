@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-v3 # Este es nuestro ambiente GREEN
+  name: web-v4 # Este es nuestro ambiente GREEN
 spec:
   replicas: 5
   selector:
