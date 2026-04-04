@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-v4 # Este es nuestro ambiente GREEN
+  name: web-v4 # Nombre normalizado
 spec:
   replicas: 5
   selector:
     matchLabels:
       app: mi-web
-      version: v4
+      version: v4 # Etiqueta coincidente con Istio
   template:
     metadata:
       labels:
@@ -16,26 +16,24 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: wfuentes/mi-web:v4  # <--- Asegúrate que diga exactamente esto
-        imagePullPolicy: Always # <--- Cambia "Never" por "IfNotPresent"
+        image: wfuentes/mi-web:v4
+        imagePullPolicy: Always
         resources:
           requests:
-            memory: "64Mi"   # Lo que el pod tiene garantizado para "nacer"
-            cpu: "100m"      # 100 milicores (el 10% de un núcleo)
+            memory: "64Mi"
+            cpu: "100m"
           limits:
-            memory: "128Mi"  # El techo máximo de RAM
-            cpu: "200m"      # El techo máximo de CPU (20% de un núcleo)
+            memory: "128Mi"
+            cpu: "200m"
         ports:
         - containerPort: 80
         readinessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 5  # Espera 5 seg antes de la primera prueba
-          periodSeconds: 5        # Revisa cada 5 seg
+          initialDelaySeconds: 5
         livenessProbe:
           httpGet:
             path: /
             port: 80
-          initialDelaySeconds: 15 # Da más tiempo para arrancar antes de "matarlo"
-          periodSeconds: 10
+          initialDelaySeconds: 15
