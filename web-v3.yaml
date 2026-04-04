@@ -18,6 +18,13 @@ spec:
       - name: nginx
         image: wfuentes/mi-web:v4  # <--- Asegúrate que diga exactamente esto
         imagePullPolicy: Always # <--- Cambia "Never" por "IfNotPresent"
+        resources:
+          requests:
+            memory: "64Mi"   # Lo que el pod tiene garantizado para "nacer"
+            cpu: "100m"      # 100 milicores (el 10% de un núcleo)
+          limits:
+            memory: "128Mi"  # El techo máximo de RAM
+            cpu: "200m"      # El techo máximo de CPU (20% de un núcleo)
         ports:
         - containerPort: 80
         readinessProbe:
