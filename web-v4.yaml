@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: wfuentes/mi-web:v4
+        image: wfuentes/mi-web:v99-error
         imagePullPolicy: Always
         resources:
           requests:
